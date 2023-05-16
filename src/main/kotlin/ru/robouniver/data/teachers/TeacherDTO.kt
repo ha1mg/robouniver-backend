@@ -1,6 +1,7 @@
 package ru.robouniver.data.teachers
 
-class TeacherDTO(
+data class TeacherDTO(
+    val id: Int,
     val login: String,
     val password: String,
     val name: String,

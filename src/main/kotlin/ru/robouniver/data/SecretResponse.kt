@@ -1,11 +1,9 @@
 package ru.robouniver.data
 
-import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AuthResponse(
+data class SecretResponse(
     val statusCode: Int,
-    val token: String,
-    val name: String
+    val id: Int
 )

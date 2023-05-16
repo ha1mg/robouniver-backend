@@ -12,6 +12,7 @@ import org.jetbrains.exposed.exceptions.ExposedSQLException
 import ru.robouniver.data.teachers.Teachers
 import ru.robouniver.data.teachers.TeacherDTO
 import ru.robouniver.data.AuthResponse
+import ru.robouniver.data.SecretResponse
 import ru.robouniver.data.SignInRequest
 import ru.robouniver.data.SignUpRequest
 
@@ -43,6 +44,7 @@ fun Route.signUp(
         try {
             teacherDataSource.insert(
                 TeacherDTO(
+                    id = 0,
                     login = request.login,
                     password = saltedHash.hash,
                     name = request.name,
@@ -92,15 +94,18 @@ fun Route.signIn(
         val token = tokenService.generate(
             config = tokenConfig,
             TokenClaim(
-                name = "teacherLogin",
-                value = teacher.login
+                name = "teacherId",
+                value = teacher.id.toString()
+
             )
         )
 
         call.respond(
             status = HttpStatusCode.OK,
             message = AuthResponse(
-                token = token
+                statusCode = HttpStatusCode.OK.value,
+                token = token,
+                name = teacher.name
             )
         )
     }
@@ -111,8 +116,14 @@ fun Route.getSecretInfo() {
     authenticate {
         get("secret") {
             val principal = call.principal<JWTPrincipal>()
-            val userId = principal?.getClaim("teacherLogin", String::class)
-            call.respond(HttpStatusCode.OK, "Your login: $userId")
+            val userId = principal?.getClaim("teacherId", Int::class)
+            call.respond(
+                status = HttpStatusCode.OK,
+                message = SecretResponse(
+                    statusCode = HttpStatusCode.OK.value,
+                    id = userId ?: -1
+                )
+            )
         }
     }
 }

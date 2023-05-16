@@ -5,6 +5,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.jetbrains.exposed.sql.Database
 import ru.robouniver.data.teachers.Teachers
+import ru.robouniver.data.venues.Teachersvenues
 import ru.robouniver.plugins.*
 import ru.robouniver.security.hashing.SHA256HashingService
 import ru.robouniver.security.token.JwtTokenService
@@ -29,6 +30,7 @@ fun Application.module() {
         secret = System.getenv("JWT_SECRET")
     )
     val hashingService = SHA256HashingService()
+    val venueDataSource = Teachersvenues
 
     configureMonitoring()
     configureSerialization()
@@ -37,6 +39,7 @@ fun Application.module() {
         teacherDataSource = teacherDataSource,
         hashingService = hashingService,
         tokenService = tokenService,
-        tokenConfig = tokenConfig
+        tokenConfig = tokenConfig,
+        venueDataSource = venueDataSource
     )
 }

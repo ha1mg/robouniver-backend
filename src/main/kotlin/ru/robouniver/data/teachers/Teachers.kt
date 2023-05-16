@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 object Teachers : Table() {
+    private val id = Teachers.integer("id")
     private val login = Teachers.varchar("login", 25)
     private val password = Teachers.varchar("password", 64)
     private val name = Teachers.varchar("name", 50)
@@ -26,6 +27,7 @@ object Teachers : Table() {
             transaction {
                 val teacherModel = Teachers.select { Teachers.login.eq(login) }.single()
                 TeacherDTO(
+                    id = teacherModel[Teachers.id],
                     login = teacherModel[Teachers.login],
                     password = teacherModel[password],
                     name = teacherModel[name],
