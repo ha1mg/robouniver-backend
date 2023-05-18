@@ -1,5 +1,8 @@
 package ru.robouniver.data.venues
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class VenueDTO(
     val id: String,
     val name: String,

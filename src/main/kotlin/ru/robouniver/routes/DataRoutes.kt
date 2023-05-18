@@ -21,6 +21,7 @@ fun Route.getVenues(
                 call.respond(HttpStatusCode.Conflict, "erorr")
             } else {
                 val venues = venueDataSource.fetchVenue(teacherId)
+                println(venues.toString())
                 if (venues != null) {call.respond(
                     status = HttpStatusCode.OK,
                     message = VenueResponse(

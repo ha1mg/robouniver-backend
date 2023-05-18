@@ -15,15 +15,15 @@ object Venues : Table() {
 
 
 object Teachersvenues: Table() {
-    val teacher = Teachersvenues.integer("teacher")
-    val venue = Teachersvenues.varchar("venue", length = 25) //references Venues.id
+    private val teacher = Teachersvenues.integer("teacher")
+    private val venue = Teachersvenues.varchar("venue", length = 25) //references Venues.id
 
 
     fun fetchVenue(teacherId: Int): List<VenueDTO>? {
         return try {
             transaction {
-                val tvModel = Teachersvenues.select { teacher.eq(teacherId) }
-                Venues.select { Venues.id.eq(tvModel.forEach()) }
+                val query = Teachersvenues.select { teacher.eq(teacherId) }.toList().map {it[venue]}
+                Venues.select { Venues.id inList query  }
                     .toList().map{
                         VenueDTO(
                             id = it[Venues.id],
@@ -31,8 +31,7 @@ object Teachersvenues: Table() {
                             discription = it[Venues.discription],
                             address = it[Venues.address]
                         )
-                    }
-            }
+                    }  }
         } catch (e: Exception) {
              null
         }

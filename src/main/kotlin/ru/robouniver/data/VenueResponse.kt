@@ -1,12 +1,11 @@
 package ru.robouniver.data
 
 
-import kotlinx.serialization.SerialName
+import kotlinx.serialization.*
 import ru.robouniver.data.venues.VenueDTO
 
+@Serializable
 data class VenueResponse(
-    @SerialName("statusCode")
     val statusCode: Int,
-    @SerialName("venues")
     val venues: List<VenueDTO>
 )
