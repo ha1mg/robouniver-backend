@@ -10,7 +10,6 @@ object Teachers : Table() {
     private val password = Teachers.varchar("password", 64)
     private val name = Teachers.varchar("name", 50)
     private val salt = Teachers.varchar("salt", 64)
-
     fun insert(teacherDTO: TeacherDTO) {
         transaction {
             Teachers.insert {

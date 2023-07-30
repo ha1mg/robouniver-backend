@@ -7,18 +7,16 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 
 object Venues : Table() {
-    val id = Venues.varchar("id", 25)
-    val name = Venues.varchar("name", 25)
-    val discription = Venues.varchar("discription", 100)
+    val id = Venues.integer("id")
+    val name = Venues.varchar("name", 50)
+    val discription = Venues.varchar("discription", 200)
     val address = Venues.varchar("adress", 100)
 }
 
 
 object Teachersvenues: Table() {
     private val teacher = Teachersvenues.integer("teacher")
-    private val venue = Teachersvenues.varchar("venue", length = 25) //references Venues.id
-
-
+    private val venue = Teachersvenues.integer("venue")
     fun fetchVenue(teacherId: Int): List<VenueDTO>? {
         return try {
             transaction {
@@ -33,7 +31,8 @@ object Teachersvenues: Table() {
                         )
                     }  }
         } catch (e: Exception) {
-             null
+            println(e)
+            null
         }
     }
 }
